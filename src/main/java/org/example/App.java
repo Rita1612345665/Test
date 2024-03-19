@@ -15,48 +15,52 @@ public class App {
 
     static String calc(String input) {
         String[] simvols = input.split(" "); // массив символс присваивает подстроки между пробелами
-        boolean isRimOne = isRim(simvols[0]); //возвращает римскость
-        boolean isRimTwo = isRim(simvols[2]);
-        boolean isArabOne = isArab(simvols[0]); //возвращает арабскость
-        boolean isArabTwo = isArab(simvols[2]);
-        int one;
-        int two;
-        if (isArabTwo && isArabOne) {
-            one = getIntFromArab(simvols[0]); //возвращает число из строки арабских
-            two = getIntFromArab(simvols[2]);
-        } else if (isRimOne && isRimTwo) {
-            one = getIntFromRim(simvols[0]); //возвращает число из строки римских
-            two = getIntFromRim(simvols[2]);
-        } else {
-            throw new IllegalArgumentException("Введены неверные значения");
-        }
-        int x;
-
-        if (((one > 0) && (one < 11)) && ((two > 0) && (two < 11))) {
-            switch (simvols[1]) { //проверка действий
-                case ("+"):
-                    x = one + two;
-                    break;
-                case ("-"):
-                    x = one - two;
-                    break;
-                case ("*"):
-                    x = one * two;
-                    break;
-                case ("/"):
-                    x = one / two;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Введен неверный символ"); // исключение 
-            }
+        if (simvols.length == 3) {
+            boolean isRimOne = isRim(simvols[0]); //возвращает римскость
+            boolean isRimTwo = isRim(simvols[2]);
+            boolean isArabOne = isArab(simvols[0]); //возвращает арабскость
+            boolean isArabTwo = isArab(simvols[2]);
+            int one;
+            int two;
             if (isArabTwo && isArabOne) {
-                return String.valueOf(x);
+                one = getIntFromArab(simvols[0]); //возвращает число из строки арабских
+                two = getIntFromArab(simvols[2]);
+            } else if (isRimOne && isRimTwo) {
+                one = getIntFromRim(simvols[0]); //возвращает число из строки римских
+                two = getIntFromRim(simvols[2]);
             } else {
-                return getStringFromRim(x);
+                throw new IllegalArgumentException("Введены неверные значения");
+            }
+            int x;
 
+            if (((one > 0) && (one < 11)) && ((two > 0) && (two < 11))) {
+                switch (simvols[1]) { //проверка действий
+                    case ("+"):
+                        x = one + two;
+                        break;
+                    case ("-"):
+                        x = one - two;
+                        break;
+                    case ("*"):
+                        x = one * two;
+                        break;
+                    case ("/"):
+                        x = one / two;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Введен неверный символ"); // исключение
+                }
+                if (isArabTwo && isArabOne) {
+                    return String.valueOf(x);
+                } else {
+                    return getStringFromRim(x);
+
+                }
+            } else {
+                throw new IllegalArgumentException("Введено неверное число"); //исключение
             }
         } else {
-            throw new IllegalArgumentException("Введено неверное число"); //исключение
+            throw new IllegalArgumentException("Введено больше 2 операндов");
         }
     }
 
@@ -64,7 +68,7 @@ public class App {
         if (x > 0) {
             int edin = x % 10; //edinitsi
             int des = (x % 100) / 10; //desyatki
-            int sot = (x / 1000) / 100; //sotni
+            int sot = (x % 1000) / 100; //sotni
             return sot(sot)+des (des)+edin(edin);
         } else {
             throw new IllegalArgumentException("Отрицательный результат");
